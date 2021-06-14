@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void invertir(int c)
+{
+    if (c=='.')
+        return ;
+
+    c=getchar();
+    invertir(c);
+    putchar(c);
+
+}
+
+
+int main()
+{
+    int c;
+    printf("Ingrese la frase\n");
+    c=getchar();
+    invertir(c);
+    putchar(c);
+
+    return 0;
+
+}

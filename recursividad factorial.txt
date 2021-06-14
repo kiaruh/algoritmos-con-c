@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+long factorial(int num);
+
+int main()
+{
+    long f;
+    int num;
+    printf("ingrese un numero rrrr: ");
+    scanf("%d",&num);
+    f = factorial(num);
+    printf("%ld",f);
+
+    return 0;
+}
+
+long factorial(int num)
+{
+    if(num==0){
+        return 1;
+    }
+    return factorial(num-1)*num;
+
+}

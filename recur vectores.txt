@@ -1,0 +1,18 @@
+#include<stdio.h>
+//suman de vectores
+
+int suma(int[],int);
+int main()
+{
+    int v[5]={1,2,3,4,5};
+    printf("La suma de los elementos del vector es %d", suma(v,4));
+    return 0;
+}
+
+int suma(int v[],int n)
+{
+    if(n==0)
+        return v[0];
+    else
+        return v[n] + suma(v, n-1);
+}

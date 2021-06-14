@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<time.h>
+
+#define CANTIDAD_NUMEROS 10
+#define DESDE 1
+#define HASTA 10
+
+typedef struct lista{
+	int num;
+	struct lista *sig;
+ }nodo;
+
+
+void crear (nodo *pt, int);
+void mostrar(nodo *pt);
+nodo* insertar1(nodo* );
+nodo* eliminar1(nodo* );
+void insertar2 (nodo* );
+void eliminar2(nodo* );
+
+
+int main()
+{
+    int i=0;
+    nodo *prin;
+
+    srand(time(NULL));  //Inicio la semilla para generar numeros aleatorios - una sola vez en el main
+
+    prin=(nodo*)malloc(sizeof(nodo));
+    crear(prin,i);
+    mostrar (prin);
+
+    return 0;
+}
+
+void crear (nodo *registro,int cont)
+{
+
+    registro->num = rand () % (HASTA-DESDE+1) + DESDE;
+
+    if (cont==CANTIDAD_NUMEROS) //si cambia se convierte en 1
+        registro->sig=NULL;
+    else
+	{
+
+        registro->sig=(nodo*)malloc(sizeof(nodo));
+        cont++;
+        crear (registro->sig,cont);
+
+	}
+	return;
+}
+
+void mostrar (nodo *registro)
+{
+    if (registro->sig !=NULL)
+	{
+        printf ("%d\n",registro->num);
+        mostrar (registro->sig);
+	}
+	return;
+}
+
+/*
+//modelos a utilizar... modificarlos segun el ejercicio.
+nodo* insertar1(nodo *p)
+{
+    nodo *aux;
+    if()//condicion de insercion
+    {
+        aux=(nodo *)malloc(sizeof(nodo));
+        aux->num=0;//valor a insertar
+        aux->sig=p;
+        p=aux;
+    }
+    return p;
+}
+
+void insertar2 (nodo *p)
+{nodo *aux;
+    while(p->sig!=NULL)
+    {
+        if() //condicion de insercion
+        {
+            aux=(nodo *)malloc(sizeof(nodo));
+            aux->num=0;//valor a insertar
+            aux->sig=p->sig;
+            p->sig=aux;
+
+        }
+        p=p->sig;
+    }
+}
+
+nodo* eliminar1(nodo* p)
+{nodo *aux;
+    while()//condicion de eliminacion
+    {
+        aux=p->sig;
+        free(p);
+        p=aux;
+
+    }
+    return p;
+}
+void eliminar2(nodo* p)
+{nodo *aux;
+    while(p->sig!=NULL&& p->sig->sig!=NULL)
+    {
+        if()//condicion de eliminacion
+        {
+            aux=p->sig->sig;
+            free(p->sig);
+            p->sig=aux;
+        }
+        else
+        {
+            p=p->sig;
+        }
+    }
+
+}
+*/

@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Numeros
+{
+    int Entero;
+    struct Numeros *sig;
+}Lista;
+void Cargar (Lista *P)
+{
+    printf("Ingrese un numero entero\n");
+    scanf("%d",&P->Entero);
+    if(P->Entero == 1000)
+    {
+        P->sig = NULL;
+        return;
+    }
+    else
+    {
+        P->sig = (Lista*)malloc(sizeof(Lista));
+        Cargar(P->sig);
+    }
+}
+void Mostrar(Lista *P)
+{
+    if(P->sig == NULL)
+    {
+        printf("\n");
+        return;
+    }
+    else
+    {
+        printf("%d\t",P->Entero);
+        Mostrar(P->sig);
+    }
+}
+
+Lista *EliminarPorCabeza(Lista *P,int Num)
+{
+    Lista *aux;
+    while(P->Entero == Num)
+    {
+        aux =(Lista*)malloc(sizeof(Lista));
+        aux= P->sig;
+        free(P);
+        P=aux;
+    }
+    return P;
+}
+void Eliminar(Lista *P,int Num)
+{
+    Lista *aux;
+    while (P->sig != NULL)
+    {
+        if(P->sig->Entero == Num)
+    {
+        aux =(Lista*)malloc(sizeof(Lista));
+        aux= P->sig->sig;
+        free(P->sig);
+        P->sig=aux;
+    }
+    P=P->sig;
+}
+}
+void Insertar(Lista *P)
+{
+    Lista *aux;
+    int Num = P->Entero;
+    if(Num > P->sig->Entero)
+    {
+    while(Num > P->sig->Entero+1)
+    {
+        Num--;
+        aux = (Lista*)malloc(sizeof(Lista));
+        aux->Entero = Num;
+        aux->sig=P->sig;
+        P->sig=aux;
+        P=P->sig;
+
+    }
+    }
+    else if(Num < P->sig->Entero)
+    {
+    while(Num < P->sig->Entero-1)
+             {
+                 Num++;
+        aux = (Lista*)malloc(sizeof(Lista));
+        aux->Entero = Num;
+        aux->sig=P->sig;
+        P->sig=aux;
+        P=P->sig;
+
+             }
+    }
+}
+int main()
+{
+    int Num;
+    Lista *P;
+    P = (Lista*)malloc(sizeof(Lista));
+    Cargar(P);
+    Mostrar(P);
+    printf("Ingrese el numero que desea eliminar\n");
+    scanf("%d",&Num);
+    if(P->Entero == Num)
+    {
+        P=EliminarPorCabeza(P,Num);
+        Eliminar(P,Num);
+    }
+    else
+    {
+        Eliminar(P,Num);
+    }
+    Mostrar(P);
+    Insertar(P);
+    printf("Mostrando Listas sucesivas\n");
+    Mostrar(P);
+}

@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Cuenta
+{
+    int Ncuenta;
+    float SaldoCtaCrrnte,SaldoCtaAhorro;
+    struct Cuenta *sig;
+}Banco;
+typedef struct Unificacion
+{
+    int NCuenta;
+    float Saldo;
+    struct Unificacion *sig;
+}Resultado;
+void Generar(Banco *R)
+{
+    printf("Ingrese el numero de cuenta\n");
+    scanf("%d",&R->Ncuenta);
+    if (R->Ncuenta == 0)
+    {
+        R->sig = NULL;
+        return;
+    }
+    else
+    {
+        printf("Ingrese el saldo de la cuenta corriente\n");
+        scanf("%f",&R->SaldoCtaCrrnte);
+        printf("Ingrese el saldo de la cuenta de ahorro\n");
+        scanf("%f",&R->SaldoCtaAhorro);
+        R->sig = (Banco*)malloc(sizeof(Banco));
+        Generar(R->sig);
+    }
+}
+void Mostrar(Banco *R)
+{
+    if (R->sig == NULL)
+        return;
+    else
+    {
+        printf("Numero de cuenta: %d -- Saldos CtaCorriente: %.2f - CtaAhorro %.2f\n",R->Ncuenta,R->SaldoCtaCrrnte,R->SaldoCtaAhorro);
+        printf("-------------------------------\n");
+        Mostrar(R->sig);
+    }
+}
+void Nueva(Banco *R, Resultado *P)
+{
+    if (R->sig == NULL)
+    {
+        P->sig = NULL;
+        return;
+    }
+    else
+    {
+        P->NCuenta = R->Ncuenta;
+        P->Saldo = R->SaldoCtaAhorro + R->SaldoCtaCrrnte;
+        P->sig = (Resultado*)malloc(sizeof(Resultado));
+        Nueva(R->sig,P->sig);
+    }
+}
+void MostrarNueva(Resultado *R)
+{
+    if (R->sig == NULL)
+        return;
+    else
+    {
+        printf("Numero de cuenta: %d -- Saldo: %.2f\n",R->NCuenta,R->Saldo);
+        printf("-------------------------------\n");
+        MostrarNueva(R->sig);
+    }
+}
+Banco *Eliminar(Banco *R)
+{
+    Banco *aux;
+    while(R->SaldoCtaAhorro < 0 || R->SaldoCtaCrrnte <0 )
+    {
+        aux = R->sig;
+        free(R);
+        R = aux;
+    }
+    return R;
+}
+void Eliminar2(Banco *R)
+{
+    Banco *aux;
+    while (R->sig != NULL)
+    {
+        if (R->sig->SaldoCtaAhorro < 0 || R->sig->SaldoCtaCrrnte <0)
+        {
+        aux = R->sig->sig;
+        free(R->sig);
+        R->sig == aux;
+        }
+        else
+        {
+            R =R->sig ;
+        }
+}
+}
+void Insertar(Banco *R)
+{
+    Banco *aux;
+    aux = (Banco*)malloc(sizeof(Banco));
+    printf("Ingrese el usuario que desea agregar\n");
+    scanf("%d",&aux->Ncuenta);
+    printf("Ingrese el saldo de la cuenta Ahorro\n");
+    scanf("%f",&aux->SaldoCtaAhorro);
+    printf("Ingrese el saldo de Cta Corriente\n");
+    scanf("%f",&aux->SaldoCtaCrrnte);
+    while(R->sig->sig !=NULL)
+    {
+        R = R->sig;
+    }
+    aux->sig = R->sig;
+    R->sig = aux;
+}
+int main()
+{
+    Banco*P;
+    Resultado*K;
+    P = (Banco*)malloc(sizeof(Banco));
+    K = (Resultado*)malloc(sizeof(Resultado));
+    Generar(P);
+    Mostrar(P);
+    Nueva(P,K);
+    printf("Saldo total en las cuentas\n");
+    MostrarNueva(K);
+    printf("Eliminando cuentas con saldo negativo\n");
+    printf("\n");
+    P = Eliminar(P);
+    Eliminar2(P);
+    Mostrar(P);
+    printf("Ingresando nuevo usuario");
+    Insertar(P);
+    Mostrar(P);
+}
